@@ -9,11 +9,15 @@ import { toast } from "sonner";
 
 interface Interaction {
   id: string;
-  instagram_username: string;
+  platform: string;
+  event_type: string;
+  instagram_username: string | null;
   full_name: string;
-  keyword: string;
-  comment: string;
+  keyword: string | null;
+  comment: string | null;
   response: string;
+  phone_number: string | null;
+  group_name: string | null;
   created_at: string;
 }
 
@@ -65,11 +69,14 @@ const Index = () => {
   };
 
   const totalInteractions = interactions.length;
-  const uniqueKeywords = new Set(interactions.map(i => i.keyword)).size;
-  const uniqueUsers = new Set(interactions.map(i => i.instagram_username)).size;
-  
-  // Calculate response rate (assume 100% for now since all are successful interactions)
-  const responseRate = totalInteractions > 0 ? 100 : 0;
+  const instagramInteractions = interactions.filter(i => i.platform === 'instagram').length;
+  const whatsappInteractions = interactions.filter(i => i.platform === 'whatsapp').length;
+  const whatsappJoins = interactions.filter(i => i.platform === 'whatsapp' && i.event_type === 'group_join').length;
+  const whatsappLeaves = interactions.filter(i => i.platform === 'whatsapp' && i.event_type === 'group_leave').length;
+  const uniqueKeywords = new Set(interactions.filter(i => i.keyword).map(i => i.keyword)).size;
+  const uniqueUsers = new Set(
+    interactions.map(i => i.platform === 'instagram' ? i.instagram_username : i.phone_number)
+  ).size;
 
   if (loading) {
     return (
@@ -104,21 +111,25 @@ const Index = () => {
             title="Total de Interações"
             value={totalInteractions}
             icon={MessageSquare}
+            description={`Instagram: ${instagramInteractions} | WhatsApp: ${whatsappInteractions}`}
+          />
+          <MetricCard
+            title="WhatsApp - Entradas"
+            value={whatsappJoins}
+            icon={Users}
+            description="Pessoas que entraram no grupo"
+          />
+          <MetricCard
+            title="WhatsApp - Saídas"
+            value={whatsappLeaves}
+            icon={TrendingUp}
+            description="Pessoas que saíram do grupo"
           />
           <MetricCard
             title="Usuários Únicos"
             value={uniqueUsers}
-            icon={Users}
-          />
-          <MetricCard
-            title="Palavras-chave"
-            value={uniqueKeywords}
             icon={Hash}
-          />
-          <MetricCard
-            title="Taxa de Resposta"
-            value={`${responseRate}%`}
-            icon={TrendingUp}
+            description={`Palavras-chave: ${uniqueKeywords}`}
           />
         </div>
 

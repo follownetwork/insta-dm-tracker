@@ -34,17 +34,38 @@ export const WebhookInfo = () => {
           {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
         </Button>
       </div>
-      <div className="mt-4 p-4 bg-muted/30 rounded-lg">
-        <p className="text-sm font-medium text-foreground mb-2">Formato esperado (JSON):</p>
-        <pre className="text-xs text-muted-foreground overflow-x-auto">
+      <div className="mt-4 space-y-4">
+        <div className="p-4 bg-muted/30 rounded-lg">
+          <p className="text-sm font-medium text-foreground mb-2">Instagram:</p>
+          <pre className="text-xs text-muted-foreground overflow-x-auto">
 {`{
+  "platform": "instagram",
+  "event_type": "comment",
   "instagram_username": "usuario123",
   "full_name": "Nome Completo",
   "keyword": "PALAVRA",
   "comment": "Texto do comentário",
   "response": "Mensagem enviada"
 }`}
-        </pre>
+          </pre>
+        </div>
+
+        <div className="p-4 bg-muted/30 rounded-lg">
+          <p className="text-sm font-medium text-foreground mb-2">WhatsApp:</p>
+          <pre className="text-xs text-muted-foreground overflow-x-auto">
+{`{
+  "platform": "whatsapp",
+  "event_type": "group_join",
+  "phone_number": "+5511999999999",
+  "full_name": "Nome Completo",
+  "group_name": "Nome do Grupo",
+  "response": "Mensagem de boas-vindas"
+}`}
+          </pre>
+          <p className="text-xs text-muted-foreground mt-2">
+            event_type: "group_join" ou "group_leave"
+          </p>
+        </div>
       </div>
     </Card>
   );

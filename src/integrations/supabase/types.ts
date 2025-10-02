@@ -16,33 +16,45 @@ export type Database = {
     Tables: {
       instagram_interactions: {
         Row: {
-          comment: string
+          comment: string | null
           created_at: string
+          event_type: string
           full_name: string
+          group_name: string | null
           id: string
-          instagram_username: string
-          keyword: string
+          instagram_username: string | null
+          keyword: string | null
           metadata: Json | null
+          phone_number: string | null
+          platform: string
           response: string
         }
         Insert: {
-          comment: string
+          comment?: string | null
           created_at?: string
+          event_type?: string
           full_name: string
+          group_name?: string | null
           id?: string
-          instagram_username: string
-          keyword: string
+          instagram_username?: string | null
+          keyword?: string | null
           metadata?: Json | null
+          phone_number?: string | null
+          platform?: string
           response: string
         }
         Update: {
-          comment?: string
+          comment?: string | null
           created_at?: string
+          event_type?: string
           full_name?: string
+          group_name?: string | null
           id?: string
-          instagram_username?: string
-          keyword?: string
+          instagram_username?: string | null
+          keyword?: string | null
           metadata?: Json | null
+          phone_number?: string | null
+          platform?: string
           response?: string
         }
         Relationships: []

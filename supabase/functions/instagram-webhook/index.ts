@@ -21,20 +21,51 @@ Deno.serve(async (req) => {
 
     // Extract data from n8n webhook
     const {
+      platform = 'instagram',
+      event_type = 'comment',
       instagram_username,
       full_name,
       keyword,
       comment,
       response,
+      phone_number,
+      group_name,
       metadata = {}
     } = body
 
-    // Validate required fields
-    if (!instagram_username || !full_name || !keyword || !comment || !response) {
+    // Validate required fields based on platform
+    if (!full_name || !response) {
       return new Response(
         JSON.stringify({ 
           error: 'Missing required fields',
-          required: ['instagram_username', 'full_name', 'keyword', 'comment', 'response']
+          required: ['full_name', 'response', 'platform', 'event_type']
+        }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
+
+    // Platform-specific validation
+    if (platform === 'instagram' && (!instagram_username || !keyword || !comment)) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Missing Instagram-specific fields',
+          required: ['instagram_username', 'keyword', 'comment']
+        }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
+
+    if (platform === 'whatsapp' && (!phone_number || !group_name)) {
+      return new Response(
+        JSON.stringify({ 
+          error: 'Missing WhatsApp-specific fields',
+          required: ['phone_number', 'group_name']
         }),
         { 
           status: 400, 
@@ -47,11 +78,15 @@ Deno.serve(async (req) => {
     const { data, error } = await supabase
       .from('instagram_interactions')
       .insert({
+        platform,
+        event_type,
         instagram_username,
         full_name,
         keyword,
         comment,
         response,
+        phone_number,
+        group_name,
         metadata
       })
       .select()
