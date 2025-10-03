@@ -16,8 +16,23 @@ Deno.serve(async (req) => {
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
     const supabase = createClient(supabaseUrl, supabaseKey)
 
-    const body = await req.json()
-    console.log('Received webhook data:', body)
+    // Log raw body for debugging
+    const rawBody = await req.text()
+    console.log('Raw body received:', rawBody)
+    
+    if (!rawBody) {
+      console.error('Empty body received')
+      return new Response(
+        JSON.stringify({ error: 'Empty request body' }),
+        { 
+          status: 400, 
+          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+        }
+      )
+    }
+
+    const body = JSON.parse(rawBody)
+    console.log('Parsed webhook data:', body)
 
     // Extract data from n8n webhook
     const {
