@@ -95,7 +95,7 @@ const Index = () => {
       <header className="border-b border-border/50 bg-card/30 backdrop-blur-sm sticky top-0 z-10">
         <div className="container mx-auto px-6 py-4">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Dashboard Instagram
+            Dashboard Instagram - Arlei Souza
           </h1>
           <p className="text-sm text-muted-foreground mt-1">
             Acompanhe suas interações em tempo real
