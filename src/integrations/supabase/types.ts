@@ -25,9 +25,9 @@ export type Database = {
           instagram_username: string | null
           keyword: string | null
           metadata: Json | null
-          phone_number: string | null
           platform: string
           response: string
+          whatsapp_id: string | null
         }
         Insert: {
           comment?: string | null
@@ -39,9 +39,9 @@ export type Database = {
           instagram_username?: string | null
           keyword?: string | null
           metadata?: Json | null
-          phone_number?: string | null
           platform?: string
           response: string
+          whatsapp_id?: string | null
         }
         Update: {
           comment?: string | null
@@ -53,9 +53,9 @@ export type Database = {
           instagram_username?: string | null
           keyword?: string | null
           metadata?: Json | null
-          phone_number?: string | null
           platform?: string
           response?: string
+          whatsapp_id?: string | null
         }
         Relationships: []
       }

@@ -28,7 +28,7 @@ Deno.serve(async (req) => {
       keyword,
       comment,
       response,
-      phone_number,
+      whatsapp_id,
       group_name,
       metadata = {}
     } = body
@@ -61,11 +61,11 @@ Deno.serve(async (req) => {
       )
     }
 
-    if (platform === 'whatsapp' && (!phone_number || !group_name)) {
+    if (platform === 'whatsapp' && (!whatsapp_id || !group_name)) {
       return new Response(
         JSON.stringify({ 
           error: 'Missing WhatsApp-specific fields',
-          required: ['phone_number', 'group_name']
+          required: ['whatsapp_id', 'group_name']
         }),
         { 
           status: 400, 
@@ -85,7 +85,7 @@ Deno.serve(async (req) => {
         keyword,
         comment,
         response,
-        phone_number,
+        whatsapp_id,
         group_name,
         metadata
       })

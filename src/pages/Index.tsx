@@ -16,7 +16,7 @@ interface Interaction {
   keyword: string | null;
   comment: string | null;
   response: string;
-  phone_number: string | null;
+  whatsapp_id: string | null;
   group_name: string | null;
   created_at: string;
 }
@@ -75,7 +75,7 @@ const Index = () => {
   const whatsappLeaves = interactions.filter(i => i.platform === 'whatsapp' && i.event_type === 'group_leave').length;
   const uniqueKeywords = new Set(interactions.filter(i => i.keyword).map(i => i.keyword)).size;
   const uniqueUsers = new Set(
-    interactions.map(i => i.platform === 'instagram' ? i.instagram_username : i.phone_number)
+    interactions.map(i => i.platform === 'instagram' ? i.instagram_username : i.whatsapp_id)
   ).size;
 
   if (loading) {

@@ -20,7 +20,7 @@ interface Interaction {
   keyword: string | null;
   comment: string | null;
   response: string;
-  phone_number: string | null;
+  whatsapp_id: string | null;
   group_name: string | null;
   created_at: string;
 }
@@ -84,7 +84,7 @@ export const InteractionsTable = ({ interactions }: InteractionsTableProps) => {
                     <TableCell className="font-medium text-foreground">
                       {interaction.platform === 'instagram' 
                         ? `@${interaction.instagram_username}` 
-                        : interaction.phone_number}
+                        : interaction.whatsapp_id}
                     </TableCell>
                     <TableCell className="text-foreground">{interaction.full_name}</TableCell>
                     <TableCell className="max-w-xs">

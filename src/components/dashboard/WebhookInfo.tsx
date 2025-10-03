@@ -56,7 +56,7 @@ export const WebhookInfo = () => {
 {`{
   "platform": "whatsapp",
   "event_type": "group_join",
-  "phone_number": "+5511999999999",
+  "whatsapp_id": "5511999999999@c.us",
   "full_name": "Nome Completo",
   "group_name": "Nome do Grupo",
   "response": "Mensagem de boas-vindas"
