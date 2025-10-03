@@ -55,11 +55,9 @@ export const WebhookInfo = () => {
           <pre className="text-xs text-muted-foreground overflow-x-auto">
 {`{
   "platform": "whatsapp",
-  "event_type": "group_join",
-  "whatsapp_id": "5511999999999@c.us",
-  "full_name": "Nome Completo",
-  "group_name": "Nome do Grupo",
-  "response": "Mensagem de boas-vindas"
+  "event_type": "group_leave",
+  "whatsapp_id": "213528929693813@lid",
+  "group_name": "A PROPOSTA ESTRATÉGICA"
 }`}
           </pre>
           <p className="text-xs text-muted-foreground mt-2">

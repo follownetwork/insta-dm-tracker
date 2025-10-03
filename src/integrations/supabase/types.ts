@@ -19,42 +19,42 @@ export type Database = {
           comment: string | null
           created_at: string
           event_type: string
-          full_name: string
+          full_name: string | null
           group_name: string | null
           id: string
           instagram_username: string | null
           keyword: string | null
           metadata: Json | null
           platform: string
-          response: string
+          response: string | null
           whatsapp_id: string | null
         }
         Insert: {
           comment?: string | null
           created_at?: string
           event_type?: string
-          full_name: string
+          full_name?: string | null
           group_name?: string | null
           id?: string
           instagram_username?: string | null
           keyword?: string | null
           metadata?: Json | null
           platform?: string
-          response: string
+          response?: string | null
           whatsapp_id?: string | null
         }
         Update: {
           comment?: string | null
           created_at?: string
           event_type?: string
-          full_name?: string
+          full_name?: string | null
           group_name?: string | null
           id?: string
           instagram_username?: string | null
           keyword?: string | null
           metadata?: Json | null
           platform?: string
-          response?: string
+          response?: string | null
           whatsapp_id?: string | null
         }
         Relationships: []

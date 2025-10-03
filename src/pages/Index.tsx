@@ -12,10 +12,10 @@ interface Interaction {
   platform: string;
   event_type: string;
   instagram_username: string | null;
-  full_name: string;
+  full_name: string | null;
   keyword: string | null;
   comment: string | null;
-  response: string;
+  response: string | null;
   whatsapp_id: string | null;
   group_name: string | null;
   created_at: string;

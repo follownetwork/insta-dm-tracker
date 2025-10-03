@@ -33,26 +33,12 @@ Deno.serve(async (req) => {
       metadata = {}
     } = body
 
-    // Validate required fields based on platform
-    if (!full_name || !response) {
-      return new Response(
-        JSON.stringify({ 
-          error: 'Missing required fields',
-          required: ['full_name', 'response', 'platform', 'event_type']
-        }),
-        { 
-          status: 400, 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-        }
-      )
-    }
-
     // Platform-specific validation
-    if (platform === 'instagram' && (!instagram_username || !keyword || !comment)) {
+    if (platform === 'instagram' && (!instagram_username || !keyword || !comment || !full_name || !response)) {
       return new Response(
         JSON.stringify({ 
           error: 'Missing Instagram-specific fields',
-          required: ['instagram_username', 'keyword', 'comment']
+          required: ['instagram_username', 'keyword', 'comment', 'full_name', 'response']
         }),
         { 
           status: 400, 

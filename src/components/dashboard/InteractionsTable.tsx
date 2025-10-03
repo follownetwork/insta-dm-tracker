@@ -16,10 +16,10 @@ interface Interaction {
   platform: string;
   event_type: string;
   instagram_username: string | null;
-  full_name: string;
+  full_name: string | null;
   keyword: string | null;
   comment: string | null;
-  response: string;
+  response: string | null;
   whatsapp_id: string | null;
   group_name: string | null;
   created_at: string;
@@ -86,7 +86,7 @@ export const InteractionsTable = ({ interactions }: InteractionsTableProps) => {
                         ? `@${interaction.instagram_username}` 
                         : interaction.whatsapp_id}
                     </TableCell>
-                    <TableCell className="text-foreground">{interaction.full_name}</TableCell>
+                    <TableCell className="text-foreground">{interaction.full_name || '-'}</TableCell>
                     <TableCell className="max-w-xs">
                       {interaction.platform === 'instagram' ? (
                         <div className="space-y-1">
