@@ -4,8 +4,14 @@ import { MetricCard } from "@/components/dashboard/MetricCard";
 import { InteractionsChart } from "@/components/dashboard/InteractionsChart";
 import { InteractionsTable } from "@/components/dashboard/InteractionsTable";
 import { WebhookInfo } from "@/components/dashboard/WebhookInfo";
-import { MessageSquare, Users, Hash, TrendingUp } from "lucide-react";
+import { MessageSquare, Users, Hash, TrendingUp, Calendar as CalendarIcon } from "lucide-react";
 import { toast } from "sonner";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { format, isToday, isYesterday, isSameDay, startOfDay, endOfDay } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { cn } from "@/lib/utils";
 
 interface Interaction {
   id: string;
@@ -24,6 +30,7 @@ interface Interaction {
 const Index = () => {
   const [interactions, setInteractions] = useState<Interaction[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
   useEffect(() => {
     fetchInteractions();
@@ -68,15 +75,27 @@ const Index = () => {
     }
   };
 
-  const totalInteractions = interactions.length;
-  const instagramInteractions = interactions.filter(i => i.platform === 'instagram').length;
-  const whatsappInteractions = interactions.filter(i => i.platform === 'whatsapp').length;
-  const whatsappJoins = interactions.filter(i => i.platform === 'whatsapp' && i.event_type === 'group_join').length;
-  const whatsappLeaves = interactions.filter(i => i.platform === 'whatsapp' && i.event_type === 'group_leave').length;
-  const uniqueKeywords = new Set(interactions.filter(i => i.keyword).map(i => i.keyword)).size;
+  // Filter interactions by selected date
+  const filteredInteractions = selectedDate 
+    ? interactions.filter(i => isSameDay(new Date(i.created_at), selectedDate))
+    : interactions;
+
+  const totalInteractions = filteredInteractions.length;
+  const instagramInteractions = filteredInteractions.filter(i => i.platform === 'instagram').length;
+  const whatsappInteractions = filteredInteractions.filter(i => i.platform === 'whatsapp').length;
+  const whatsappJoins = filteredInteractions.filter(i => i.platform === 'whatsapp' && i.event_type === 'group_join').length;
+  const whatsappLeaves = filteredInteractions.filter(i => i.platform === 'whatsapp' && i.event_type === 'group_leave').length;
+  const uniqueKeywords = new Set(filteredInteractions.filter(i => i.keyword).map(i => i.keyword)).size;
   const uniqueUsers = new Set(
-    interactions.map(i => i.platform === 'instagram' ? i.instagram_username : i.whatsapp_id)
+    filteredInteractions.map(i => i.platform === 'instagram' ? i.instagram_username : i.whatsapp_id)
   ).size;
+
+  const getDateLabel = () => {
+    if (!selectedDate) return "Selecione uma data";
+    if (isToday(selectedDate)) return "Hoje";
+    if (isYesterday(selectedDate)) return "Ontem";
+    return format(selectedDate, "dd 'de' MMMM", { locale: ptBR });
+  };
 
   if (loading) {
     return (
@@ -105,6 +124,42 @@ const Index = () => {
 
       {/* Main Content */}
       <main className="container mx-auto px-6 py-8 space-y-8">
+        {/* Date Filter */}
+        <div className="flex items-center gap-4 animate-fade-in">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "justify-start text-left font-normal",
+                  !selectedDate && "text-muted-foreground"
+                )}
+              >
+                <CalendarIcon className="mr-2 h-4 w-4" />
+                {getDateLabel()}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={setSelectedDate}
+                initialFocus
+                className="pointer-events-auto"
+              />
+            </PopoverContent>
+          </Popover>
+          {selectedDate && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setSelectedDate(undefined)}
+            >
+              Limpar filtro
+            </Button>
+          )}
+        </div>
+
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 animate-fade-in">
           <MetricCard
@@ -145,7 +200,7 @@ const Index = () => {
 
         {/* Table */}
         <div className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
-          <InteractionsTable interactions={interactions} />
+          <InteractionsTable interactions={filteredInteractions} />
         </div>
       </main>
     </div>
